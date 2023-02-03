@@ -23,7 +23,6 @@ router.get("/image", async (req: express.Request, res: express.Response) => {
     const url = myCache.get(fileName + width + height) as string;
     fs.readFile(url, (err, data) => {
       res.end(data, "binary").status(200);
-      console.log("get")
     });
   } else {
     await resizeImage(fileName, parseFloat(width), parseFloat(height));
@@ -43,7 +42,6 @@ router.get("/image", async (req: express.Request, res: express.Response) => {
             ".jpg"
         );
         res.end(data, "binary").status(200);
-        console.log("done")
       }
     );
   }
