@@ -10,8 +10,9 @@ const resizeImage = (
     path.join(process.cwd(), "images/originalImage/") + fileName + ".jpg";
   const outputFile =
     path.join(process.cwd(), "images/resizedImage/") +
-    fileName +
-    width +
+    fileName + "-" +
+    width + "-" +
+    height +
     ".jpg";
   return sharp(inputPath).resize(width, height).toFile(outputFile);
 };

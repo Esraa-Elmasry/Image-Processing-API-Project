@@ -19,7 +19,7 @@ const imageProcessing_1 = __importDefault(require("../imageFunctions/imageProces
 const path_1 = __importDefault(require("path"));
 const router = (0, express_1.Router)();
 const myCache = new node_cache_1.default();
-router.get('/image', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/image", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const fileName = req.query.fileName;
     const width = req.query.width;
     const height = req.query.height;
@@ -27,20 +27,32 @@ router.get('/image', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(400).send("one of the paramters is not found");
     }
     else if (isNaN(parseInt(width)) || isNaN(parseInt(height))) {
-        res.status(400).send("Check width ot height value");
+        res.status(400).send("Please provide a valid value");
     }
-    else if (myCache.has(fileName + width)) {
-        const url = myCache.get(fileName + width);
+    else if (parseFloat(width) <= 0 || parseFloat(height) <= 0) {
+        res.status(400).send("width or height values cannot be <=0");
+    }
+    else if (fileName !== "flower") {
+        res.status(400).send("file name is not exist");
+    }
+    else if (myCache.has(fileName + width + height)) {
+        const url = myCache.get(fileName + width + height);
         fs_1.default.readFile(url, (err, data) => {
             res.end(data, "binary").status(200);
         });
     }
     else {
         yield (0, imageProcessing_1.default)(fileName, parseFloat(width), parseFloat(height));
-        fs_1.default.readFile(path_1.default.join(process.cwd(), 'images/resizedImage/') + fileName + width + '.jpg', (err, data) => {
-            myCache.set(fileName + width, path_1.default.join(process.cwd(), 'images/resizedImage/') +
-                fileName + width +
-                '.jpg');
+        fs_1.default.readFile(path_1.default.join(process.cwd(), "images/resizedImage/") +
+            fileName + "-" +
+            width + "-" +
+            height +
+            ".jpg", (err, data) => {
+            myCache.set(fileName + width + height, path_1.default.join(process.cwd(), "images/resizedImage/") +
+                fileName + "-" +
+                width + "-" +
+                height +
+                ".jpg");
             res.end(data, "binary").status(200);
         });
     }

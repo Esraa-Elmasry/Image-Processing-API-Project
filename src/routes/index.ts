@@ -14,28 +14,36 @@ router.get("/image", async (req: express.Request, res: express.Response) => {
   if (fileName === undefined || width === undefined || height === undefined) {
     res.status(400).send("one of the paramters is not found");
   } else if (isNaN(parseInt(width)) || isNaN(parseInt(height))) {
-    res.status(400).send("Check width ot height value");
-  } else if (myCache.has(fileName + width)) {
-    const url = myCache.get(fileName + width) as string;
+    res.status(400).send("Please provide a valid value");
+  } else if (parseFloat(width)<=0 || parseFloat(height)<=0) {
+    res.status(400).send("width or height values cannot be <=0")
+  } else if(fileName!=="flower") {
+    res.status(400).send("file name is not exist")
+  }else if (myCache.has(fileName + width + height)) {
+    const url = myCache.get(fileName + width + height) as string;
     fs.readFile(url, (err, data) => {
       res.end(data, "binary").status(200);
+      console.log("get")
     });
   } else {
     await resizeImage(fileName, parseFloat(width), parseFloat(height));
     fs.readFile(
       path.join(process.cwd(), "images/resizedImage/") +
-        fileName +
-        width +
+        fileName + "-" +
+        width + "-" +
+        height +
         ".jpg",
       (err, data) => {
         myCache.set(
-          fileName + width,
+          fileName + width + height,
           path.join(process.cwd(), "images/resizedImage/") +
-            fileName +
-            width +
+            fileName + "-" +
+            width + "-"+
+            height +
             ".jpg"
         );
         res.end(data, "binary").status(200);
+        console.log("done")
       }
     );
   }

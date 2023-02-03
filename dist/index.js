@@ -11,7 +11,7 @@ const port = 3000;
 app.use(express_1.default.json());
 app.use(logger_1.default);
 app.use("/api", index_1.default);
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.status(200).send("connected");
 });
 app.listen(port, () => {
