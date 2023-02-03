@@ -39,6 +39,7 @@ router.get("/image", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const url = myCache.get(fileName + width + height);
         fs_1.default.readFile(url, (err, data) => {
             res.end(data, "binary").status(200);
+            console.log("get");
         });
     }
     else {
@@ -54,6 +55,7 @@ router.get("/image", (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 height +
                 ".jpg");
             res.end(data, "binary").status(200);
+            console.log("done");
         });
     }
 }));

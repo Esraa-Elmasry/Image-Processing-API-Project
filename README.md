@@ -18,13 +18,11 @@
 1- run "npm run test"
 
 ## Dependecies:
-    @types/eslint
-    cors
-    eslint
     express
-    jasmine
-    jasmine-spec-reporter
-    lint
-    node-cache
     sharp
-    supertest
+    fs
+    typeScript
+    jasmine (test)
+    supertest (test)
+    
+   
